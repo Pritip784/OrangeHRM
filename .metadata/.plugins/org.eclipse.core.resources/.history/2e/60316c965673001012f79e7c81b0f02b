@@ -1,0 +1,51 @@
+package pages;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class EmpList {
+
+	WebDriver driver;
+
+    By rows = By.cssSelector("div.oxd-table-card");
+
+    public EmpList(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public boolean searchAndVerifyEmployee(String fullName) {
+    	boolean isFound = false;
+    	do {
+			// Wait for employee table to load
+    		try {
+    			List<WebElement> allRows = driver.findElements(rows);
+    			for (WebElement employee : allRows) {
+    				if (employee.getText().trim().startsWith(fullName)) {
+    					isFound = true;
+    					break;
+    				}
+    			}
+
+    			if (!isFound) {
+    				// Check if Next button is enabled
+    				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+    				WebElement nextBtn = driver.findElement(By
+    						.cssSelector(".oxd-icon.bi-chevron-right"));
+    				if (nextBtn == null) break;
+    				nextBtn.click();
+    				Thread.sleep(2000);
+    			}
+    		} catch (Exception e) {
+    			break;
+    		}
+			
+
+		} while (!isFound);
+
+		return isFound;
+    }
+}

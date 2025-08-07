@@ -1,0 +1,29 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+public class DashboardPage {
+
+	WebDriver driver;
+
+	By DashBoard = By.xpath("//i[@class='oxd-icon bi-list oxd-topbar-header-hamburger']");
+	By PIM = By.xpath("//span[normalize-space()='PIM']");
+
+	public DashboardPage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void dashBoard() {
+		driver.findElement(DashBoard).click();
+	}
+	public void navigateToPIM() {
+        Actions actions = new Actions(driver);
+        WebElement pim = driver.findElement(PIM);
+        actions.moveToElement(pim).click().perform();
+    }
+	
+	
+}

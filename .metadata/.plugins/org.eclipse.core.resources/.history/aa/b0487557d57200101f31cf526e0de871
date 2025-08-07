@@ -1,0 +1,14 @@
+Feature: OrangeHRM Employee Management
+
+  Scenario: Add and verify employees
+   Scenario: Add employees and verify them in the employee list
+    Given User is on OrangeHRM login page
+    When User logs in with username "Admin" and password "admin123"
+    And User navigates to the PIM module
+    And User adds the following employees
+      | FirstName | LastName  |
+      | Alice     | Smith     |
+      | Bob       | Johnson   |
+      | Charlie   | Brown     |
+    Then User verifies the employees are present in the list
+    And User logs out of the application

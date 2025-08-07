@@ -1,0 +1,19 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class PIMPage {
+	WebDriver driver;
+
+	By addBtn = By.xpath("//i[@class='oxd-icon bi-plus oxd-button-icon']");
+
+
+	public PIMPage(WebDriver driver) {
+		this.driver = driver;
+	}
+	public void clickAdd() {
+        driver.findElement(addBtn).click();
+    }
+	
+}

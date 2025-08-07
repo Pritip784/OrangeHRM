@@ -1,0 +1,37 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+public class DashboardPage {
+
+	WebDriver driver;
+
+	By PIM = By.xpath("//*[@id=\"app\"]/div[1]/div[1]/aside/nav/div[2]/ul/li[2]/a/span" + "");
+	By logOut = By.xpath("//p[@class='oxd-userdropdown-name']");
+
+	public DashboardPage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void navigateToPIM() {
+		Actions actions = new Actions(driver);
+		WebElement pim = driver.findElement(PIM);
+		actions.moveToElement(pim).click().perform();
+	}
+
+	public void logout() {
+
+		WebElement profileIcon = driver
+				.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[1]/header/div[1]/div[3]/ul/li/span"));
+		profileIcon.click();
+
+		WebElement logoutBtn = driver
+				.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[1]/header/div[1]/div[3]/ul/li/ul/li[4]/a"));
+		logoutBtn.click();
+
+	}
+
+}

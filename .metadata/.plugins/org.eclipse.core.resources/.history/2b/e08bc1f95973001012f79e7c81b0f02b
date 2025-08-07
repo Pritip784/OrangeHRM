@@ -1,0 +1,90 @@
+package pages;
+
+import java.time.Duration;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class EmpList {
+
+	WebDriver driver;
+
+	By rows = By.cssSelector("div.oxd-table-card");
+
+	public EmpList(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public boolean searchAndVerifyEmployee(String fullName) {
+//		boolean isFound = false;
+//		do {
+//			try {
+//				List<WebElement> allRows = driver.findElements(rows);
+//				for (WebElement employee : allRows) {
+//					if (employee.getText().trim().startsWith(fullName)) {
+//						isFound = true;
+//						break;
+//					}
+//				}
+//
+//				if (!isFound) {
+//					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+//					WebElement nextBtn = driver.findElement(By.cssSelector(".oxd-icon.bi-chevron-right"));
+//					if (nextBtn == null)
+//						break;
+//					nextBtn.click();
+//					Thread.sleep(2000);
+//					
+//					
+//				}
+//			} catch (Exception e) {
+//				break;
+//			}
+//
+//		} while (!isFound);
+//
+//		return isFound;
+//	}
+		boolean isFound = false;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		do {
+			try {
+				// Wait until table rows are present
+				List<WebElement> allRows = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(rows));
+
+				for (WebElement employee : allRows) {
+					if (employee.getText().trim().startsWith(fullName)) {
+						isFound = true;
+						break;
+					}
+				}
+
+				if (!isFound) {
+					// Check if "Next" button is present and clickable
+					List<WebElement> nextBtns = driver.findElements(By.cssSelector(".oxd-icon.bi-chevron-right"));
+					if (nextBtns.isEmpty()) {
+						break;
+					}
+
+					WebElement nextBtn = wait.until(ExpectedConditions.elementToBeClickable(nextBtns.get(0)));
+					nextBtn.click();
+
+					// Wait for the table to refresh — optionally wait for rows again
+					wait.until(ExpectedConditions.stalenessOf(allRows.get(0)));
+
+				}
+			} catch (Exception e) {
+				System.out.println("Exception during employee search: " + e.getMessage());
+				break;
+			}
+
+		} while (!isFound);
+
+		return isFound;
+
+	}
+}

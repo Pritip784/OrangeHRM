@@ -1,0 +1,33 @@
+package pages;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class EmpList {
+
+	WebDriver driver;
+
+    By rows = By.cssSelector("div.oxd-table-card");
+
+    public EmpList(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public boolean searchAndVerifyEmployee(String fullName) {
+        boolean found = false;
+        List<WebElement> allRows = driver.findElements(rows);
+
+        for (WebElement row : allRows) {
+        	System.out.println("Row is" + row.getText());
+            if (row.getText().contains(fullName)) {
+                found = true;
+                break;
+            }
+        }
+
+        return found;
+    }
+}

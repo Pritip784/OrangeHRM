@@ -1,0 +1,26 @@
+package stepDefinition;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import pages.LoginPage;
+
+public class LoginSteps extends BaseClass {
+	LoginPage login;
+
+	@Given("User is on OrangeHRM login page")
+	public void user_is_on_orange_hrm_login_page() {
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		login = new LoginPage(driver);
+
+	}
+
+	@When("User logs in with username {string} and password {string}")
+	public void user_logs_in_with_username_and_password(String username, String password) {
+		login.login(username, password);
+
+	}
+}

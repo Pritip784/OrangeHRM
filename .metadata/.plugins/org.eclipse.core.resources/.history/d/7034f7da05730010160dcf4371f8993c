@@ -1,0 +1,71 @@
+package pages;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class EmpList {
+
+	WebDriver driver;
+
+    By rows = By.cssSelector("div.oxd-table-card");
+
+    public EmpList(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public boolean searchAndVerifyEmployee(String fullName) {
+    	boolean isFound = false;
+    	do {
+			// Wait for employee table to load
+    		List<WebElement> allRows = driver.findElements(rows);
+
+			for (WebElement employee : names) {
+				if (employee.getText().trim().equalsIgnoreCase(fullName)) {
+					isFound = true;
+					break;
+				}
+			}
+
+			if (!isFound) {
+				// Check if Next button is enabled
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+				WebElement nextBtn = driver.findElement(By
+						.xpath("//button[@class='oxd-pagination-page-item oxd-pagination-page-item--previous-next']"));
+				if (!nextBtn.isEnabled()) {
+					System.out.println("Not Enabled");
+					break;
+				}else {
+					nextBtn.click();
+					Thread.sleep(2000);
+				}
+//				String disabled = nextBtn.getAttribute("disabled");
+//				if (disabled != null && disabled.equals("true")) {
+//					break; // No more pages
+//				} else {
+//					nextBtn.click();
+//					Thread.sleep(1000); // Wait for next page to load (replace with WebDriverWait ideally)
+//				}
+			}
+
+		} while (!isFound);
+
+		return isFound;
+//    	
+//        boolean found = false;
+//        List<WebElement> allRows = driver.findElements(rows);
+//
+//        for (WebElement row : allRows) {
+//        	System.out.println();
+//            if (row.getText().contains(fullName)) {
+//                found = true;
+//                break;
+//            }
+//        }
+//
+//        return found;
+    }
+}

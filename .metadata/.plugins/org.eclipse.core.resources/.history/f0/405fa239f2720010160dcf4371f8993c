@@ -1,0 +1,54 @@
+package stepDefinition;
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import pages.AddEmployeePage;
+import pages.DashboardPage;
+import pages.EmpList;
+import pages.LoginPage;
+
+public class OrangeHRMsteps extends BaseClass {
+	LoginPage login;
+	DashboardPage dashboardPage;
+	AddEmployeePage addemp;
+	EmpList list;
+
+	@Given("User is on OrangeHRM login page")
+	public void user_is_on_login_page() {
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+	}
+
+	@When("User logs in with valid credentials")
+	public void user_logs_in_with_valid_credentials() {
+		login = new LoginPage(driver);
+		login.enterUsername("Admin");
+		login.enterPassword("admin123");
+		login.clickLogin();
+	}
+
+	@And("User navigates to PIM module")
+	public void user_navigates_to_pim() {
+		dashboardPage = new DashboardPage(driver);
+		dashboardPage.navigateToPIM();
+
+	}
+
+	@And("User adds new employees")
+	public void user_adds_employees() {
+		addemp = new AddEmployeePage(driver);
+		for (String fullName : addedEmployees) {
+			String[] parts = fullName.split(" ");
+			addemp.clickAdd();
+			addemp.enterEmployeeName(parts[0], parts[1]);
+			addemp.saveEmployee();
+			dashboardPage.navigateToPIM(); // Navigate back to PIM after adding
+		}
+	}
+}

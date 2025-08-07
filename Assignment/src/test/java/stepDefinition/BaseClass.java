@@ -1,0 +1,18 @@
+package stepDefinition;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class BaseClass {
+
+	static BaseClass shared = new BaseClass();
+	private ChromeDriver driver;
+
+	private BaseClass() {
+		driver = new ChromeDriver();
+
+	}
+
+	public ChromeDriver getDriver() {
+		return driver;
+	}
+}

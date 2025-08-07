@@ -1,0 +1,71 @@
+package pages;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class AddEmployeePage {
+
+	WebDriver driver;
+	By addBtn = By.xpath("//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[3]");
+	By FirstName = By.name("firstName");
+	By LastName = By.name("lastName");
+	By Empid = By.xpath(
+			"//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div[2]/div[1]/div[2]/div/div/div[2]/input");
+	By Savebtn = By.xpath("//button[@type='submit']");
+	By empList = By.xpath("//a[normalize-space()='Employee List']");
+	By add = By.xpath("//button[normalize-space()='Add']");
+
+	public AddEmployeePage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void clickAdd() {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		Actions actions = new Actions(driver);
+		WebElement Add = driver.findElement(addBtn);
+		actions.moveToElement(Add).click().perform();
+	}
+
+	public void enterEmployeeName(String first, String last, String id) {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		System.out.println("First name " + first + " " + last);
+		driver.findElement(FirstName).sendKeys(first);
+		driver.findElement(LastName).sendKeys(last);
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement empIdField = wait.until(ExpectedConditions.elementToBeClickable(Empid));
+		empIdField.click(); // Just to focus
+		empIdField.sendKeys(Keys.chord(Keys.CONTROL, "a")); // Select all
+		empIdField.sendKeys(Keys.DELETE); // Clear
+		empIdField.sendKeys(id);
+//		driver.findElement(Empid).sendKeys(id);
+
+	}
+
+	public void saveEmployee() {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		driver.findElement(Savebtn).click();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void employeeList() {
+		driver.findElement(empList).click();
+	}
+
+	public void addEmployee() {
+		driver.findElement(add).click();
+	}
+
+}

@@ -1,0 +1,43 @@
+package pages;
+
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.WebDriver;
+
+public class AddEmployeePage {
+
+	WebDriver driver;
+	By addBtn = By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[1]/button");
+	By FirstName = By.name("firstName");
+	By LastName = By.name("lastName");
+	By Savebtn = By.xpath("//button[@type='submit']");
+	By empList = By.xpath("//a[normalize-space()='Employee List']");
+	By add = By.xpath("//button[normalize-space()='Add']");
+
+	public AddEmployeePage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void clickAdd() {
+		driver.findElement(addBtn).click();
+	}
+
+	public void enterEmployeeName(String first, String last) {
+		driver.findElement(FirstName).sendKeys(first);
+		driver.findElement(LastName).sendKeys(last);
+
+	}
+
+	public void saveEmployee() {
+		driver.findElement(Savebtn).click();
+	}
+
+	public void employeeList() {
+		driver.findElement(empList).click();
+	}
+
+	public void addEmployee() {
+		driver.findElement(add).click();
+	}
+
+}

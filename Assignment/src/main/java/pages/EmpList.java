@@ -1,0 +1,59 @@
+package pages;
+
+import java.time.Duration;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class EmpList {
+
+	WebDriver driver;
+
+	By rows = By.cssSelector("div.oxd-table-card");
+
+	public EmpList(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public boolean searchAndVerifyEmployee(String fullName) {
+
+		boolean isFound = false;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		do {
+			try {
+
+				List<WebElement> allRows = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(rows));
+
+				for (WebElement employee : allRows) {
+					if (employee.getText().trim().startsWith(fullName)) {
+						isFound = true;
+						break;
+					}
+				}
+
+				if (!isFound) {
+
+					List<WebElement> nextBtns = driver.findElements(By.cssSelector(".oxd-icon.bi-chevron-right"));
+					if (nextBtns.isEmpty()) {
+						break;
+					}
+
+					WebElement nextBtn = wait.until(ExpectedConditions.elementToBeClickable(nextBtns.get(0)));
+					nextBtn.click();
+
+				}
+			} catch (Exception e) {
+				System.out.println("Exception during employee search: " + e.getMessage());
+				break;
+			}
+
+		} while (!isFound);
+
+		return isFound;
+
+	}
+}

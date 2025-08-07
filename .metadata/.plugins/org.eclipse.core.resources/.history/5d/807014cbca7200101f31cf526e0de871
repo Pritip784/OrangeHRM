@@ -1,0 +1,10 @@
+Feature: OrangeHRM Employee Management
+
+  Scenario: Add and verify employees
+  
+    Given User is on OrangeHRM login page
+    When User logs in with valid credentials
+    And User navigates to the PIM module
+    And User adds multiple employees
+    Then User verifies the employees in the Employee List
+    And User logs out

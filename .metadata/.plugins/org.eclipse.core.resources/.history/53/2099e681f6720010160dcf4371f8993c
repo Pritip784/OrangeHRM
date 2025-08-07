@@ -1,0 +1,87 @@
+package stepDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import pages.AddEmployeePage;
+import pages.DashboardPage;
+import pages.EmpList;
+import pages.LoginPage;
+
+public class OrangeHRMsteps {
+	WebDriver driver = BaseClass.shared.getDriver();
+	LoginPage login;
+	DashboardPage dashboardPage;
+	AddEmployeePage addemp;
+	EmpList list;
+
+	List<String> addedEmployees = new ArrayList<>();
+
+	@Given("User is on OrangeHRM login page")
+	public void user_is_on_login_page() {
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+	}
+
+	@When("User logs in with valid credentials")
+	public void user_logs_in_with_valid_credentials() {
+		login = new LoginPage(driver);
+		login.enterUsername("Admin");
+		login.enterPassword("admin123");
+		login.clickLogin();
+	}
+
+	@And("User navigates to PIM module")
+	public void user_navigates_to_pim() {
+		dashboardPage = new DashboardPage(driver);
+		dashboardPage.navigateToPIM();
+
+	}
+
+	@And("User adds new employees")
+	public void user_adds_employees(DataTable dataTable) {
+		addemp = new AddEmployeePage(driver);
+		List<Map<String, String>> employees = dataTable.asMaps(String.class, String.class);
+
+		for (Map<String, String> emp : employees) {
+			String firstName = emp.get("FirstName");
+			String lastName = emp.get("LastName");
+			String fullName = firstName + " " + lastName;
+			addedEmployees.add(fullName);
+
+			addemp.clickAdd();
+			addemp.enterEmployeeName(firstName, lastName);
+			addemp.saveEmployee();
+
+		}
+	}
+
+	@Then("User verifies added employees in the employee list")
+	public void verify_employees_in_list() {
+		addemp.employeeList();
+		EmpList list = new EmpList(driver);
+		for (String name : addedEmployees) {
+			boolean found = list.searchAndVerifyEmployee(name);
+			if (found) {
+				System.out.println(name + " - Name Verified");
+			} else {
+				System.out.println(name + " - Not Found");
+			}
+		}
+	}
+
+	@And("User logs out from the application")
+	public void logout_user() {
+		driver.quit();
+	}
+}

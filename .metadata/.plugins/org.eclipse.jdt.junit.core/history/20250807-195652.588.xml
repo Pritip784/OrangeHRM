@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestRunner" project="Assignment" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="runner.TestRunner" time="110.476">
+    <testsuite name="OrangeHRM Employee Management" time="110.476">
+      <testcase name="Add employees and verify them in the employee list" classname="OrangeHRM Employee Management" time="110.476"/>
+    </testsuite>
+  </testsuite>
+</testrun>

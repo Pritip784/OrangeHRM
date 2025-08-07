@@ -1,0 +1,50 @@
+package pages;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+public class AddEmployeePage {
+
+	WebDriver driver;
+	By addBtn = By.xpath("//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[3]");
+	By FirstName = By.name("firstName");
+	By LastName = By.name("lastName");
+	By Savebtn = By.xpath("//button[@type='submit']");
+	By empList = By.xpath("//a[normalize-space()='Employee List']");
+	By add = By.xpath("//button[normalize-space()='Add']");
+	
+	public AddEmployeePage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void clickAdd() {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		Actions actions = new Actions(driver);
+		WebElement Add = driver.findElement(addBtn);
+		actions.moveToElement(Add).click().perform();
+	}
+
+	public void enterEmployeeName(String first, String last) {
+		driver.findElement(FirstName).sendKeys(first);
+		driver.findElement(LastName).sendKeys(last);
+
+	}
+
+	public void saveEmployee() {
+		driver.findElement(Savebtn).click();
+	}
+
+	public void employeeList() {
+		driver.findElement(empList).click();
+	}
+
+	public void addEmployee() {
+		driver.findElement(add).click();
+	}
+
+}
