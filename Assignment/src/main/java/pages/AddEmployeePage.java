@@ -20,7 +20,7 @@ public class AddEmployeePage {
 	By Savebtn = By.xpath("//button[@type='submit']");
 	By empList = By.xpath("//a[normalize-space()='Employee List']");
 	By add = By.xpath("//button[normalize-space()='Add']");
-	By firstPage = By.xpath("//button[normalize-space()='1']");
+	By firstPage = By.cssSelector("button[class='oxd-pagination-page-item oxd-pagination-page-item--previous-next'] i[class='oxd-icon bi-chevron-left']");
 
 	public AddEmployeePage(WebDriver driver) {
 		this.driver = driver;
@@ -62,7 +62,9 @@ public class AddEmployeePage {
 	}
 
 	public void employeeList() {
-		driver.findElement(empList).click();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		WebElement empListButton = wait.until(ExpectedConditions.elementToBeClickable(empList));
+		empListButton.click();
 	}
 
 	public void addEmployee() {
@@ -70,10 +72,16 @@ public class AddEmployeePage {
 	}
 
 	public void selectFirstPage() {
-
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		WebElement firstPageBtn = wait.until(ExpectedConditions.elementToBeClickable(firstPage));
-		firstPageBtn.click();
+		do {
+			try {
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				WebElement prevButton = wait.until(ExpectedConditions.elementToBeClickable(firstPage));
+				prevButton.click();
+			}catch (Exception e) {
+				break;
+			}
+		} while(true);
+		
 	}
 
 }

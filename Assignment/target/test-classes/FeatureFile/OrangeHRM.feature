@@ -6,10 +6,10 @@ Feature: OrangeHRM Employee Management
     When User logs in with valid credentials
     And User navigates to PIM module
     And User adds new employees
-      | FirstName | LastName | EmpID    |
-      | Ram       | B.       | 022112   |
-      | Sita      | B.       | 412213   |
-      | Laxman    | B.       | 512314   |
+      | FirstName  | LastName | EmpID    |
+      | Rama       | B.       | 522335   |
+      | Sita       | B.       | 612536   |
+      | Laxman     | B.       | 712737   |
     Then User verifies added employees in the employee list
     And User logs out from the application
 
